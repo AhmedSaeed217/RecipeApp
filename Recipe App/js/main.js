@@ -6,6 +6,7 @@ let searchInput = document.querySelector(".search-input");
 let searchIcon = document.querySelector(".fa-search");
 let resultArea = document.querySelector(".result .row");
 let alertBox = document.querySelector(".alert-danger");
+let loading = document.querySelector(".lds-roller");
 
 
 //End Variables//
@@ -26,6 +27,7 @@ searchInput.addEventListener("keypress", function (event) {
 //Start Function Get All Recipes From API
 
 function getRecipe() {
+    loading.classList.remove("d-none")
     alertBox.classList.add('d-none')
     let searchKey = searchInput.value.trim();
     let apiUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchKey}`;
@@ -38,7 +40,10 @@ function getRecipe() {
             if (data.meals === null) {
                 alertBox.classList.remove('d-none')
                 alertBox.innerHTML = "Invalid Text";
+                loading.classList.add("d-none")
+
             } else {
+
                 displayRecipes(data.meals);
             }
         }
@@ -56,7 +61,7 @@ function displayRecipes(recipes) {
         let allRecipes = `<div class="col-md-3 py-3 px-2 text-light d-flex justify-content-between flex-column">
             <div>
             <img src=${recipes[i].strMealThumb} alt="" class="w-100">
-            <h4 class="mt-2 text-center">${recipes[i].strMeal}</h4>
+            <h4 class="mt-2 text-center text-dark">${recipes[i].strMeal}</h4>
             </div>
            <div>
            <a href="#" class="btn w-100" onclick="getDetails(${recipes[i].idMeal})">Get Recipe</a>
@@ -81,9 +86,9 @@ function getDetails(id) {
             details.innerHTML = ` <i onclick="closeDetails()" class="fa-solid fa-xmark fa-2x"></i>
             <h2 class="mb-3 mt-3 text-white-50 text-center">${data.meals[0].strMeal}</h2>
             <p class="text-center text-white fs-5">${data.meals[0].strInstructions}</p>
-            <a href="${data.meals[0].strSource}" target="_blank" class="btn btn-primary">Watch Video</a>`
+            <a href="${data.meals[0].strSource}" target="_blank" class="btn bg-main">Watch Video</a>`
             details.classList.remove("d-none");
-            overlay.classList.remove("d-none")
+
 
         }
         )
